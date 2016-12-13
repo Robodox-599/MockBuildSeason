@@ -1,4 +1,7 @@
 #include "WPILib.h"
+#include "Drive.h"
+#include "Intake.h"
+#include "Lift.h"
 
 class Robot: public IterativeRobot
 {
@@ -8,13 +11,20 @@ private:
 	const std::string autoNameDefault = "Default";
 	const std::string autoNameCustom = "My Auto";
 	std::string autoSelected;
-
+	Drive*drive;
+	Lift*lift;
+	Intake*intake;
+	Joystick*joystick;
 	void RobotInit()
 	{
 		chooser = new SendableChooser();
 		chooser->AddDefault(autoNameDefault, (void*)&autoNameDefault);
 		chooser->AddObject(autoNameCustom, (void*)&autoNameCustom);
 		SmartDashboard::PutData("Auto Modes", chooser);
+		drive = new Drive();
+		intake = new Intake();
+		lift = new Lift();
+		joystick = new Joystick(0);
 	}
 
 
@@ -56,6 +66,12 @@ private:
 
 	void TeleopPeriodic()
 	{
+		lift->pistonIn(joystick->GetRawButton(1));
+		drive->setForwardSpeed(joystick->GetRawAxis(0));
+		intake->intakeRun(joystick->GetRawAxis(0));
+		SmartDashboard::PutNumber("Joystick Y Axis", joystick->GetRawAxis(3));
+		SmartDashboard::PutNumber("Joystick X Axis", joystick->GetRawAxis(0));
+		SmartDashboard::PutNumber("Joystick Z Axis", joystick->GetRawAxis(1));
 
 	}
 

@@ -11,7 +11,12 @@
 class Lift
 {
 public:
+	Lift();
+	~Lift();
+	void pistonIn(bool pull);
 private:
+	DoubleSolenoid* leftLiftPiston;
+	DoubleSolenoid* rightLiftPiston;
 };
 
 
